@@ -1,30 +1,33 @@
 ﻿using SwinGameSDK;
+using Template.Scenes;
 
 namespace Template
 {
     internal class Program
     {
+        public static SceneManager SceneManager;
+        public static bool IsRunning;
+
         private void Start(string[] args)
         {
             SwinGame.OpenGraphicsWindow("Template", 800, 600);
-            SwinGame.ShowSwinGameSplashScreen();
 
-            // Handle initialization here.
+            SceneManager = new SceneManager();
+            SceneManager.PushScene(new MainMenuScene());
 
             Run();
         }
 
         private void Run()
         {
-            while (!SwinGame.WindowCloseRequested())
+            IsRunning = true;
+
+            while (!SwinGame.WindowCloseRequested() && IsRunning)
             {
                 SwinGame.ProcessEvents();
-
-                // Handle input here.
-
                 SwinGame.ClearScreen(Color.Black);
 
-                // Handle rendering here.
+                SceneManager.CurrentScene.OnUpdate();
 
                 SwinGame.DrawFramerate(0.0f, 0.0f);
                 SwinGame.RefreshScreen(60);
@@ -35,7 +38,7 @@ namespace Template
 
         private void Stop()
         {
-            // Handle termination here.
+            IsRunning = false;
         }
 
         private static void Main(string[] args) => new Program().Start(args);
