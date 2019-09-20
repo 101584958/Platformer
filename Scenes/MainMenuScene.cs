@@ -8,8 +8,8 @@ namespace Template.Scenes
         {
             base.OnUpdate();
 
-            if (SwinGame.KeyTyped(KeyCode.EscapeKey)) Program.IsRunning = false;
-            if (SwinGame.KeyTyped(KeyCode.SpaceKey)) Program.SceneManager.PushScene(new SetupScene());
+            if (SwinGame.KeyTyped(KeyCode.vk_ESCAPE)) Program.IsRunning = false;
+            if (SwinGame.KeyTyped(KeyCode.vk_SPACE)) Program.SceneManager.PushScene(new SetupScene());
         }
     }
 }
