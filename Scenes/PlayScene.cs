@@ -8,7 +8,7 @@ namespace Template.Scenes
         {
             base.OnUpdate();
 
-            if (SwinGame.KeyTyped(KeyCode.EscapeKey)) Program.SceneManager.PushScene(new PauseScene());
+            if (SwinGame.KeyTyped(KeyCode.vk_ESCAPE)) Program.SceneManager.PushScene(new PauseScene());
         }
     }
 }

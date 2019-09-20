@@ -10,7 +10,7 @@ namespace Template
 
         private void Start(string[] args)
         {
-            SwinGame.OpenGraphicsWindow("Template", 800, 600);
+            SwinGame.OpenGraphicsWindow("Platformer", 1280, 720);
 
             SceneManager = new SceneManager();
             SceneManager.PushScene(new MainMenuScene());
@@ -29,7 +29,7 @@ namespace Template
 
                 SceneManager.CurrentScene.OnUpdate();
 
-                SwinGame.DrawFramerate(0.0f, 0.0f);
+                SwinGame.DrawFramerate(1, 1);
                 SwinGame.RefreshScreen(60);
             }
 
