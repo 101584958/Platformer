@@ -54,6 +54,8 @@
     <Compile Include="Scenes\SceneManager.cs" />
     <Compile Include="Scenes\SetupScene.cs" />
     <Compile Include="TileMap.cs" />
+    <Compile Include="Utilities\MathUtilities.cs" />
+    <Compile Include="Utilities\Vector2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
