@@ -17,6 +17,12 @@ namespace Template.Utilities
             X = Y = value;
         }
 
+        public Vector2(Vector2 vector)
+        {
+            X = vector.X;
+            Y = vector.Y;
+        }
+
         public static Vector2 operator +(Vector2 left, Vector2 right)
         {
             return new Vector2

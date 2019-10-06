@@ -11,6 +11,11 @@ namespace Template.Utilities
             return _random.Next(minimum, maximum);
         }
 
+        public static bool ApproximatelyEqual(float left, float right, float epsilon = float.Epsilon)
+        {
+            return Math.Abs(left - right) < epsilon;
+        }
+
         public static T Clamp<T>(T value, T minimum, T maximum) where T : IComparable<T>
         {
             return value.CompareTo(minimum) < 0 ? minimum : value.CompareTo(maximum) > 0 ? maximum : value;
