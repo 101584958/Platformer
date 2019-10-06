@@ -48,6 +48,7 @@
     <Compile Include="Entities\Actor.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityManager.cs" />
+    <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\TileMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
