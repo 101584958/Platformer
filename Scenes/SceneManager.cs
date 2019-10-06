@@ -16,10 +16,14 @@ namespace Template.Scenes
         public void PushScene(Scene scene)
         {
             _scenes.Push(scene);
+            scene.OnEnter();
         }
 
         public Scene PopScene()
         {
+            Scene scene = _scenes.Peek();
+            scene.OnLeave();
+
             return _scenes.Pop();
         }
 

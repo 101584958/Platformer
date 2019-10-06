@@ -8,5 +8,15 @@ namespace Template.Scenes
         {
             SwinGame.DrawText($"Scene: {GetType().Name.Remove(GetType().Name.Length - 5)}", Color.White, 2.0f, 14.0f);
         }
+
+        public virtual void OnEnter()
+        {
+            
+        }
+
+        public virtual void OnLeave()
+        {
+            
+        }
     }
 }
