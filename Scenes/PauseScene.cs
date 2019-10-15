@@ -8,7 +8,7 @@ namespace Template.Scenes
         {
             if (SwinGame.KeyTyped(KeyCode.vk_ESCAPE)) Program.SceneManager.PopScene();
             if (SwinGame.KeyTyped(KeyCode.vk_SPACE)) Program.SceneManager.SetScene(new MainMenuScene());
-            
+
             base.OnUpdate();
         }
     }

@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Actor.cs" />
+    <Compile Include="Entities\Collider.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityManager.cs" />
+    <Compile Include="Entities\Flag.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\TileMap.cs" />
     <Compile Include="Program.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="Scenes\PlayScene.cs" />
     <Compile Include="Scenes\Scene.cs" />
     <Compile Include="Scenes\SceneManager.cs" />
-    <Compile Include="Scenes\SetupScene.cs" />
+    <Compile Include="Scenes\WinScene.cs" />
+    <Compile Include="Utilities\FontUtilities.cs" />
+    <Compile Include="Utilities\ICollidable.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Utilities\Vector2.cs" />
   </ItemGroup>
