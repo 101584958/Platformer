@@ -9,10 +9,12 @@ namespace Template.Entities
 {
     public class TileMap : Entity
     {
+        public override int ZIndex => -1;
+
         private Bitmap _bitmap;
         private TmxMap _map;
 
-        public TileMap(string tmxPath)
+        public TileMap(string tmxPath, EntityManager entityManager)
         {
             _map = new TmxMap(tmxPath);
 
@@ -23,6 +25,8 @@ namespace Template.Entities
             DrawLayersToBitmap(_map, tilesetBitmaps);
 
             FreeTilesetBitmaps(tilesetBitmaps);
+
+            LoadEntities(entityManager);
         }
 
         public override void OnUpdate(EntityManager entityManager)
@@ -30,18 +34,26 @@ namespace Template.Entities
             SwinGame.DrawBitmap(_bitmap, 0, 0);
         }
 
-        public bool CheckCollision(Vector2 position)
+        public void LoadEntities(EntityManager entityManager)
         {
-            Vector2 tilePosition = new Vector2
+            for (int y = 0; y < _map.Height; y++)
             {
-                X = (int) (position.X / 32.0f),
-                Y = (int) (position.Y / 32.0f)
-            };
+                for (int x = 0; x < _map.Width; x++)
+                {
+                    if (_map.TileLayers[0].Tiles[y * _map.Width + x].Gid == 1 || _map.TileLayers[0].Tiles[y * _map.Width + x].Gid == 3)
+                    {
+                        Vector2 tilePosition = new Vector2(x * _map.TileWidth, y * _map.TileHeight);
+                        Vector2 tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
 
-            if (tilePosition.X < 0 || tilePosition.X >= _map.Width || tilePosition.Y < 0 ||
-                tilePosition.Y >= _map.Height) return false;
+                        entityManager.AddEntity(new Collider(tilePosition, tileSize));
+                    }
+                }
+            }
 
-            return _map.TileLayers[0].Tiles[(int) (tilePosition.Y * _map.Width + tilePosition.X)].Gid == 1;
+            foreach (TmxObject tmxObject in _map.ObjectGroups[0].Objects)
+            {
+                AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes()).Where(type => type.Name == tmxObject.Type).Where(type => typeof(Entity).IsAssignableFrom(type)).Where(type => type.GetConstructor(new[] { typeof(TmxObject), typeof(TmxMap) }) != null).Select(type => Activator.CreateInstance(type, new object[] { tmxObject, _map })).ToList().ForEach(entity => entityManager.AddEntity(entity as Entity));
+            }
         }
 
         public void Free()
@@ -70,26 +82,23 @@ namespace Template.Entities
                 {
                     if (tile.Gid == 0) continue;
 
-                    int gidOffset = map.Tilesets.Aggregate(1,
-                        (offset, next) => next.FirstGid <= tile.Gid ? offset + next.FirstGid - 1 : offset);
-                    TmxTileset tileset = map.Tilesets.Aggregate(map.Tilesets[0],
-                        (current, next) => next.FirstGid <= tile.Gid ? next : current);
+                    int gidOffset = map.Tilesets.Aggregate(1, (offset, next) => next.FirstGid <= tile.Gid ? offset + next.FirstGid - 1 : offset);
+                    TmxTileset tileset = map.Tilesets.Aggregate(map.Tilesets[0], (current, next) => next.FirstGid <= tile.Gid ? next : current);
 
                     Bitmap bitmap = tilesetBitmaps[tileset];
 
                     int tileIndex = tile.Gid - gidOffset;
-                    float tilesetWidth = tileset.Image.Width.Value / (float) map.TileWidth;
+                    float tilesetWidth = tileset.Image.Width.Value / (float)map.TileWidth;
 
                     Rectangle rectangle = new Rectangle
                     {
                         X = map.TileWidth * (tileIndex % tilesetWidth),
-                        Y = map.TileHeight * (int) Math.Floor(tileIndex / tilesetWidth),
+                        Y = map.TileHeight * (int)Math.Floor(tileIndex / tilesetWidth),
                         Width = map.TileWidth,
                         Height = map.TileHeight
                     };
 
-                    SwinGame.DrawBitmapPart(_bitmap, bitmap, rectangle, tile.X * map.TileWidth,
-                        tile.Y * map.TileHeight);
+                    SwinGame.DrawBitmapPart(_bitmap, bitmap, rectangle, tile.X * map.TileWidth, tile.Y * map.TileHeight);
                 }
             }
         }

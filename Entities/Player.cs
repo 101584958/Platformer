@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwinGameSDK;
+﻿using SwinGameSDK;
+using Template.Utilities;
+using TiledSharp;
 
 namespace Template.Entities
 {
     class Player : Actor
     {
-        public Player(Bitmap bitmap) : base(bitmap)
+        public override int ZIndex => 0;
+
+        public Player(TmxObject tmxObject, TmxMap tmxMap) : base(SwinGame.LoadBitmap(@"Resources\player.png"))
         {
+            Position = new Vector2
+            {
+                X = (float)tmxObject.X,
+                Y = (float)tmxObject.Y
+            };
         }
 
         public override void OnUpdate(EntityManager entityManager)
@@ -24,17 +28,16 @@ namespace Template.Entities
             {
                 Velocity.X += 12;
             }
-            
-           if (SwinGame.KeyDown(KeyCode.vk_LEFT))
+
+            if (SwinGame.KeyDown(KeyCode.vk_LEFT))
             {
                 Velocity.X -= 12;
             }
-           
-               if (SwinGame.KeyDown(KeyCode.vk_UP)&& OnGround)
+
+            if (SwinGame.KeyDown(KeyCode.vk_UP) && OnGround)
             {
                 Velocity.Y -= 32;
             }
-
 
             base.OnUpdate(entityManager);
         }

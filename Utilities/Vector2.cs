@@ -97,16 +97,16 @@ namespace Template.Utilities
 
         public static bool operator ==(Vector2 left, Vector2 right)
         {
-            if (left == null && right == null) return true;
-            if (left == null || right == null) return false;
+            if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+            if (ReferenceEquals(right, null)) return ReferenceEquals(left, null);
 
             return left.X == right.X && left.Y == right.Y;
         }
 
         public static bool operator !=(Vector2 left, Vector2 right)
         {
-            if (left == null && right == null) return false;
-            if (left == null || right == null) return true;
+            if (ReferenceEquals(left, null)) return !ReferenceEquals(right, null);
+            if (ReferenceEquals(right, null)) return !ReferenceEquals(left, null);
 
             return left.X != right.X || left.Y != right.Y;
         }

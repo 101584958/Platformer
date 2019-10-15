@@ -20,12 +20,12 @@ namespace Template.Scenes
 
         public virtual void OnEnter()
         {
-            
+
         }
 
         public virtual void OnLeave()
         {
-            
+
         }
     }
 }
