@@ -9,12 +9,20 @@ namespace Template.Entities
         public Vector2 Position { get; }
         public Vector2 Size { get; }
 
-        public override void OnUpdate(EntityManager entityManager) { }
-
         public Collider(Vector2 position, Vector2 size)
         {
             Position = position;
             Size = size;
+        }
+
+        public override void OnUpdate(EntityManager entityManager)
+        {
+            
+        }
+
+        public override void OnRender(EntityManager entityManager)
+        {
+            
         }
     }
 }

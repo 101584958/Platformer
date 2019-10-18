@@ -25,11 +25,10 @@ namespace Template
             while (!SwinGame.WindowCloseRequested() && IsRunning)
             {
                 SwinGame.ProcessEvents();
-                SwinGame.ClearScreen(Color.Black);
-
                 SceneManager.CurrentScene.OnUpdate();
 
-                SwinGame.DrawFramerate(1, 1);
+                SwinGame.ClearScreen(Color.Black);
+                SceneManager.CurrentScene.OnRender();
                 SwinGame.RefreshScreen(60);
             }
 

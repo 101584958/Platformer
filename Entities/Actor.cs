@@ -9,8 +9,8 @@ namespace Template.Entities
     {
         public override int ZIndex { get; }
 
-        private const float Gravity = 1.0f, GravityLimit = 12.0f;
-        private const float Friction = 1.0f, FrictionLimit = 4.0f;
+        private const float Gravity = 1.25f, GravityLimit = 16.0f;
+        private const float Friction = 1.0f, FrictionLimit = 10.0f;
 
         public Vector2 Position { get; set; }
         public Vector2 Velocity;
@@ -52,15 +52,18 @@ namespace Template.Entities
 
                     if (!MathUtilities.ApproximatelyEqual(penetrationVector.X, 0)) Velocity.X = 0;
 
-                    if (penetrationVector.Y > 0)
+                    if (!MathUtilities.ApproximatelyEqual(penetrationVector.Y, 0))
                     {
                         Velocity.Y = 0;
-                        OnGround = true;
+                        if (penetrationVector.Y > 0) OnGround = true;
                     }
 
                 }
             }
+        }
 
+        public override void OnRender(EntityManager entityManager)
+        {
             SwinGame.DrawBitmap(Bitmap, Position.X, Position.Y);
         }
     }

@@ -20,7 +20,7 @@ namespace Template.Entities
         {
             base.OnUpdate(entityManager);
 
-            if (Collision.CheckCollision(this, entityManager.GetEntitiesByType<Player>()[0]) != null)
+            if (Collision.CheckCollision(this, entityManager.GetEntitiesByType<Player>()[0]) != null && entityManager.GetEntitiesByType<Key>().Count == 0)
             {
                 Program.SceneManager.SetScene(new WinScene());
             }

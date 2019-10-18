@@ -31,6 +31,11 @@ namespace Template.Entities
 
         public override void OnUpdate(EntityManager entityManager)
         {
+
+        }
+
+        public override void OnRender(EntityManager entityManager)
+        {
             SwinGame.DrawBitmap(_bitmap, 0, 0);
         }
 

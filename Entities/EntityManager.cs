@@ -29,6 +29,11 @@ namespace Template.Entities
             }
         }
 
+        public void OnRender()
+        {
+            foreach (Entity entity in _entities) entity.OnRender(this);
+        }
+
         public void AddEntity(Entity entity)
         {
             _entities.Add(entity);
