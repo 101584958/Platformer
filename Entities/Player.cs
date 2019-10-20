@@ -45,6 +45,11 @@ namespace Template.Entities
 
             base.OnUpdate(entityManager);
 
+            if (Position.X < 0) Position.X = 0;
+            if (Position.Y < 0) Position.Y = 0;
+            if (Position.X + Size.X > _mapWidth) Position.X = _mapWidth - Size.X;
+            if (Position.Y + Size.Y > _mapHeight) Position.Y = _mapHeight - Size.Y;
+
             List<Key> keys = entityManager.GetEntitiesByType<Key>();
 
             foreach (Key key in keys)
@@ -73,8 +78,8 @@ namespace Template.Entities
 
             SwinGame.SetCameraPos(new Point2D
             {
-                X = MathUtilities.Clamp(Position.X + Size.X - SwinGame.ScreenWidth() / 2.0f, 0.0f, _mapWidth),
-                Y = MathUtilities.Clamp(Position.Y + Size.Y - SwinGame.ScreenHeight() / 2.0f, 0.0f, _mapHeight)
+                X = MathUtilities.Clamp(Position.X + Size.X - SwinGame.ScreenWidth() / 2.0f, 0.0f, _mapWidth - SwinGame.ScreenWidth()),
+                Y = MathUtilities.Clamp(Position.Y + Size.Y - SwinGame.ScreenHeight() / 2.0f, 0.0f, _mapHeight - SwinGame.ScreenHeight())
             });
         }
     }
