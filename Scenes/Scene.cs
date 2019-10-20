@@ -15,7 +15,11 @@ namespace Template.Scenes
         public virtual void OnUpdate()
         {
             EntityManager.OnUpdate();
-            SwinGame.DrawText($"Scene: {GetType().Name.Remove(GetType().Name.Length - 5)}", Color.White, 2.0f, 14.0f);
+        }
+
+        public virtual void OnRender()
+        {
+            EntityManager.OnRender();
         }
 
         public virtual void OnEnter()
