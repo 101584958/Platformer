@@ -8,6 +8,7 @@ namespace Template.Entities
     class Player : Actor
     {
         private int _keyCount = 0;
+        private int _totalKeyCount = -1;
 
         public override int ZIndex => 1;
 
@@ -54,13 +55,15 @@ namespace Template.Entities
                     entityManager.RemoveEntity(key);
                 }
             }
+
+            if (_totalKeyCount == -1) _totalKeyCount = keys.Count;
         }
 
         public override void OnRender(EntityManager entityManager)
         {
             base.OnRender(entityManager);
 
-            string keyText = $"Keys: {_keyCount}";
+            string keyText = $"{_keyCount} / {_totalKeyCount} ({(_keyCount / (float)_totalKeyCount * 100.0f):N0}%) keys collected";
 
             int textWidth = SwinGame.TextWidth(FontUtilities.Arial24, keyText);
             int textHeight = SwinGame.TextHeight(FontUtilities.Arial24, keyText);
@@ -70,7 +73,7 @@ namespace Template.Entities
 
             SwinGame.SetCameraPos(new Point2D
             {
-                X = MathUtilities.Clamp(Position.X + Size.X - SwinGame.ScreenWidth() / 2.0f, 0.0f, _mapWidth), 
+                X = MathUtilities.Clamp(Position.X + Size.X - SwinGame.ScreenWidth() / 2.0f, 0.0f, _mapWidth),
                 Y = MathUtilities.Clamp(Position.Y + Size.Y - SwinGame.ScreenHeight() / 2.0f, 0.0f, _mapHeight)
             });
         }
