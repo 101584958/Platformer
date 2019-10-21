@@ -18,7 +18,7 @@ namespace Template.Entities
         public readonly Bitmap Bitmap;
         public Vector2 Size { get; }
 
-        public bool OnGround { get; private set; }
+        public bool OnGround { get; protected set; }
 
         public Actor(Bitmap bitmap)
         {
@@ -40,8 +40,16 @@ namespace Template.Entities
             Position += Velocity;
             OnGround = false;
 
-            List<Collider> colliders = entityManager.GetEntitiesByType<Collider>();
+            OnCheckCollision(entityManager.GetEntitiesByType<Collider>());
+        }
 
+        public override void OnRender(EntityManager entityManager)
+        {
+            SwinGame.DrawBitmap(Bitmap, Position.X, Position.Y);
+        }
+
+        public virtual void OnCheckCollision(List<Collider> colliders)
+        {
             foreach (Collider collider in colliders)
             {
                 Vector2 penetrationVector = Collision.CheckCollision(this, collider);
@@ -57,14 +65,8 @@ namespace Template.Entities
                         Velocity.Y = 0;
                         if (penetrationVector.Y > 0) OnGround = true;
                     }
-
                 }
             }
-        }
-
-        public override void OnRender(EntityManager entityManager)
-        {
-            SwinGame.DrawBitmap(Bitmap, Position.X, Position.Y);
         }
     }
 }

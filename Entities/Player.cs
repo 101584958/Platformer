@@ -5,7 +5,7 @@ using TiledSharp;
 
 namespace Template.Entities
 {
-    class Player : Actor
+    public class Player : Actor
     {
         private int _keyCount = 0;
         private int _totalKeyCount = -1;
@@ -13,6 +13,9 @@ namespace Template.Entities
         public override int ZIndex => 1;
 
         private readonly int _mapWidth, _mapHeight;
+
+        private Bitmap _flippedBitmap;
+        private bool _flipped = false;
 
         public Player(TmxObject tmxObject, TmxMap tmxMap) : base(SwinGame.LoadBitmap(@"Resources\player.png"))
         {
@@ -24,6 +27,8 @@ namespace Template.Entities
 
             _mapWidth = tmxMap.Width * tmxMap.TileWidth;
             _mapHeight = tmxMap.Height * tmxMap.TileHeight;
+
+            _flippedBitmap = SwinGame.LoadBitmap(@"Resources\player-flipped.png");
         }
 
         public override void OnUpdate(EntityManager entityManager)
@@ -31,11 +36,13 @@ namespace Template.Entities
             if (SwinGame.KeyDown(KeyCode.vk_RIGHT))
             {
                 Velocity.X += 32;
+                _flipped = false;
             }
 
             if (SwinGame.KeyDown(KeyCode.vk_LEFT))
             {
                 Velocity.X -= 32;
+                _flipped = true;
             }
 
             if (SwinGame.KeyDown(KeyCode.vk_UP) && OnGround)
@@ -66,7 +73,7 @@ namespace Template.Entities
 
         public override void OnRender(EntityManager entityManager)
         {
-            base.OnRender(entityManager);
+            SwinGame.DrawBitmap(_flipped ? _flippedBitmap : Bitmap, Position);
 
             string keyText = $"{_keyCount} / {_totalKeyCount} ({(_keyCount / (float)_totalKeyCount * 100.0f):N0}%) keys collected";
 
@@ -81,6 +88,32 @@ namespace Template.Entities
                 X = MathUtilities.Clamp(Position.X + Size.X - SwinGame.ScreenWidth() / 2.0f, 0.0f, _mapWidth - SwinGame.ScreenWidth()),
                 Y = MathUtilities.Clamp(Position.Y + Size.Y - SwinGame.ScreenHeight() / 2.0f, 0.0f, _mapHeight - SwinGame.ScreenHeight())
             });
+        }
+
+        public override void OnCheckCollision(List<Collider> colliders)
+        {
+            foreach (Collider collider in colliders)
+            {
+                Vector2 penetrationVector = Collision.CheckCollision(this, collider);
+
+                if (collider.TileGid == 38 || collider.TileGid == 39 || collider.TileGid == 40)
+                {
+                    if (SwinGame.KeyDown(KeyCode.vk_DOWN) || Velocity.Y < 0) continue;
+                }
+
+                if (penetrationVector != null)
+                {
+                    Position -= penetrationVector;
+
+                    if (!MathUtilities.ApproximatelyEqual(penetrationVector.X, 0)) Velocity.X = 0;
+
+                    if (!MathUtilities.ApproximatelyEqual(penetrationVector.Y, 0))
+                    {
+                        Velocity.Y = 0;
+                        if (penetrationVector.Y > 0) OnGround = true;
+                    }
+                }
+            }
         }
     }
 }
