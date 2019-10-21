@@ -21,6 +21,9 @@ namespace Template.Entities
             _bitmap = SwinGame.CreateBitmap(_map.Width * _map.TileWidth, _map.Height * _map.TileHeight);
             SwinGame.ClearSurface(_bitmap, Color.Cyan);
 
+            Bitmap background = SwinGame.LoadBitmap(@"Resources\background.png");
+            SwinGame.DrawBitmap(_bitmap, background, 0, 0);
+
             Dictionary<TmxTileset, Bitmap> tilesetBitmaps = LoadTilesetBitmaps(_map);
             DrawLayersToBitmap(_map, tilesetBitmaps);
 
@@ -45,12 +48,14 @@ namespace Template.Entities
             {
                 for (int x = 0; x < _map.Width; x++)
                 {
-                    if (_map.TileLayers[0].Tiles[y * _map.Width + x].Gid == 1 || _map.TileLayers[0].Tiles[y * _map.Width + x].Gid == 3)
+                    int tileGid = _map.TileLayers[0].Tiles[y * _map.Width + x].Gid;
+
+                    if (tileGid == 1 || tileGid == 2 || tileGid == 3 || tileGid == 4 || tileGid == 6 || tileGid == 7 || tileGid == 8 || tileGid == 11 || tileGid == 12 || tileGid == 13 || tileGid == 16 || tileGid == 17 || tileGid == 18 || tileGid == 19 || tileGid == 20 || tileGid == 21 || tileGid == 22 || tileGid == 23 || tileGid == 24 || tileGid == 25 || tileGid == 38 || tileGid == 39 || tileGid == 40)
                     {
                         Vector2 tilePosition = new Vector2(x * _map.TileWidth, y * _map.TileHeight);
                         Vector2 tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
 
-                        entityManager.AddEntity(new Collider(tilePosition, tileSize));
+                        entityManager.AddEntity(new Collider(tileGid, tilePosition, tileSize));
                     }
                 }
             }
