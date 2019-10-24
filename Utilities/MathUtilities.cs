@@ -13,7 +13,7 @@ namespace Template.Utilities
 
         public static bool ApproximatelyEqual(float left, float right, float epsilon = float.Epsilon)
         {
-            return Math.Abs(left - right) < epsilon;
+            return Math.Abs(left - right) <= epsilon;
         }
 
         public static T Clamp<T>(T value, T minimum, T maximum) where T : IComparable<T>
